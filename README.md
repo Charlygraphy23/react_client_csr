@@ -1,6 +1,8 @@
 # react_client_csr
 This is an example how we can achive react CSR from scratch
 
+Doc link - [here](https://galvanized-wormhole-a98.notion.site/React-CSR-4056c24aaa594d43a3509550cddd18e7?pvs=4)
+
 # React CSR
 
 Let’s create a React app with client-side rendering (CSR) from scratch. 
