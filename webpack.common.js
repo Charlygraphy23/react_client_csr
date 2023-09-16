@@ -1,4 +1,5 @@
 import path from "path";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 export default {
 	entry: "./src/main.js", // Entry point for your application
@@ -8,6 +9,12 @@ export default {
 	resolve: {
 		extensions: [".js", ".jsx"],
 	},
+	plugins: [
+		// Plugin to extract CSS into separate files
+		new MiniCssExtractPlugin({
+			filename: "[name].[contenthash].css",
+		}),
+	],
 	output: {
 		clean: true,
 		path: path.resolve(process.cwd(), "build"), // Output directory
@@ -32,6 +39,11 @@ export default {
 						],
 					},
 				},
+			},
+
+			{
+				test: /\.css$/i,
+				use: [MiniCssExtractPlugin.loader, "css-loader"],
 			},
 		],
 	},

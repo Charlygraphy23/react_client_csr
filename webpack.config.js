@@ -4,9 +4,11 @@ import TerserPlugin from "terser-webpack-plugin";
 import { merge } from "webpack-merge";
 import config from "./webpack.common.js";
 import HtmlWebpackInjector from "html-webpack-injector";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 
 const output = merge(config, {
-	mode: "production",
+	devtool: "source-map",
 	mode: "production",
 	entry: "./src/main.js", // Entry point for your application
 
@@ -14,6 +16,7 @@ const output = merge(config, {
 		minimize: true,
 		minimizer: [
 			new TerserPlugin(), // Minify JavaScript using Terser
+			new CssMinimizerPlugin(), // Minimize CSS
 		],
 		splitChunks: {
 			chunks: "all",
@@ -23,6 +26,7 @@ const output = merge(config, {
 		runtimeChunk: "single",
 	},
 	performance: {
+		hints: false,
 		maxAssetSize: 244000,
 	},
 	plugins: [
@@ -32,26 +36,11 @@ const output = merge(config, {
 			inject: true,
 		}),
 		new HtmlWebpackInjector(),
+		// Plugin to extract CSS into separate files
+		new MiniCssExtractPlugin({
+			filename: "[name].[contenthash].css",
+		}),
 	],
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				include: [path.resolve(process.cwd(), "src")],
-				use: {
-					loader: "babel-loader",
-					options: {
-						presets: [
-							["@babel/preset-env", { targets: "defaults" }],
-							["@babel/preset-react"],
-						],
-					},
-				},
-			},
-		],
-	},
-
 	devServer: {
 		client: {
 			progress: true,
